@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.terrancode.blog.dto.UserDto;
 import com.terrancode.blog.entities.User;
@@ -11,6 +12,8 @@ import com.terrancode.blog.exceptions.ResourceNotFoundException;
 import com.terrancode.blog.repositories.UserRepo;
 import com.terrancode.blog.services.UserService;
 
+
+@Service
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
