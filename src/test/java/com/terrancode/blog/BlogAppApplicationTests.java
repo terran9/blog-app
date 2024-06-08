@@ -26,5 +26,7 @@ class BlogAppApplicationTests {
 		System.out.println(className);
 		System.out.println(packageName);
 	}
+	
+
 
 }
