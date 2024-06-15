@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import com.terrancode.blog.dto.BlogAppResponse;
 import com.terrancode.blog.dto.UserDto;
 import com.terrancode.blog.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -26,7 +29,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		return new ResponseEntity<UserDto>(userService.createUser(userDto), HttpStatus.CREATED);
 	}
 	
@@ -36,12 +39,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> getUserById(@PathVariable("id") Integer id){
+	public ResponseEntity<UserDto> getUserById(@Valid @PathVariable("id") Integer id){
 		return new ResponseEntity<UserDto>(userService.getUserById(id), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable("id") Integer id){
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("id") Integer id){
 		return new ResponseEntity<UserDto>(userService.updateUser(userDto, id), HttpStatus.OK);
 	} 
 	
