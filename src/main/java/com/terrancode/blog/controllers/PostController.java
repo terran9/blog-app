@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.terrancode.blog.dto.BlogAppResponse;
@@ -37,30 +38,33 @@ public class PostController {
 	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable("userId") Integer userId) {
 		return new ResponseEntity<List<PostDto>>(postService.getPostsByUser(userId), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/category/{categoryId}/posts")
 	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable("categoryId") Integer categoryId) {
 		return new ResponseEntity<List<PostDto>>(postService.getPostsByCategory(categoryId), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDto>> getAllPosts(){
-		return new ResponseEntity<List<PostDto>>(postService.getAllPosts(), HttpStatus.OK);
+	public ResponseEntity<List<PostDto>> getAllPosts(
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+		return new ResponseEntity<List<PostDto>>(postService.getAllPosts(pageNumber, pageSize), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/posts/{postId}")
-	public ResponseEntity<PostDto> getPostById(@PathVariable("postId") Integer postId){
+	public ResponseEntity<PostDto> getPostById(@PathVariable("postId") Integer postId) {
 		return new ResponseEntity<PostDto>(postService.getPostById(postId), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/posts/{postId}")
-	public ResponseEntity<BlogAppResponse> deletePost( @PathVariable("postId") Integer postId){
+	public ResponseEntity<BlogAppResponse> deletePost(@PathVariable("postId") Integer postId) {
 		postService.deletePost(postId);
-		return new ResponseEntity<BlogAppResponse>(new BlogAppResponse("Category deleted successfully", true), HttpStatus.OK);
+		return new ResponseEntity<BlogAppResponse>(new BlogAppResponse("Category deleted successfully", true),
+				HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/posts/{postId}")
-	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable("postId") Integer postId){
+	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable("postId") Integer postId) {
 		return new ResponseEntity<PostDto>(postService.updatePost(postDto, postId), HttpStatus.OK);
 	}
 
