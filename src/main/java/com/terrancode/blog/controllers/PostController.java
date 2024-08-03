@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.terrancode.blog.config.BlogConstants;
 import com.terrancode.blog.dto.BlogAppResponse;
 import com.terrancode.blog.dto.BlogPostResponse;
 import com.terrancode.blog.dto.PostDto;
@@ -47,10 +48,10 @@ public class PostController {
 
 	@GetMapping("/posts")
 	public ResponseEntity<BlogPostResponse> getAllPosts(
-			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
-			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-			@RequestParam(value = "sortType", defaultValue = "asc", required = false) String sortType ) {
+			@RequestParam(value = "pageNumber", defaultValue = BlogConstants.DEF_PAGE_NUMBER, required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = BlogConstants.DEF_PAGE_SIZE, required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = BlogConstants.DEF_SORT_BY, required = false) String sortBy,
+			@RequestParam(value = "sortType", defaultValue = BlogConstants.ASCENDING, required = false) String sortType ) {
 		return new ResponseEntity<BlogPostResponse>(postService.getAllPosts(pageNumber, pageSize, sortBy, sortType), HttpStatus.OK);
 	}
 
@@ -70,5 +71,11 @@ public class PostController {
 	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable("postId") Integer postId) {
 		return new ResponseEntity<PostDto>(postService.updatePost(postDto, postId), HttpStatus.OK);
 	}
+	
+	@GetMapping("/posts/search/{searchText}")
+	public ResponseEntity<List<PostDto>> searchPostsByTitle(@PathVariable("searchText") String searchText) {
+		return new ResponseEntity<List<PostDto>>(postService.searchPosts(searchText), HttpStatus.OK);
+	}
+	
 
 }

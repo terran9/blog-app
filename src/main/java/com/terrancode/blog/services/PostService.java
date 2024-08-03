@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.terrancode.blog.dto.BlogPostResponse;
 import com.terrancode.blog.dto.PostDto;
-import com.terrancode.blog.entities.Post;
 
 public interface PostService {
 
@@ -22,7 +21,7 @@ public interface PostService {
 
 	List<PostDto> getPostsByUser(Integer userId);
 
-	List<Post> searchPosts(String searchText);
+	List<PostDto> searchPosts(String searchText);
 
 	
 
