@@ -2,6 +2,7 @@ package com.terrancode.blog.services;
 
 import java.util.List;
 
+import com.terrancode.blog.dto.BlogPostResponse;
 import com.terrancode.blog.dto.PostDto;
 import com.terrancode.blog.entities.Post;
 
@@ -13,7 +14,7 @@ public interface PostService {
 
 	void deletePost(Integer postId);
 
-	List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize);
+	BlogPostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortType);
 
 	PostDto getPostById(Integer postId);
 
@@ -22,5 +23,7 @@ public interface PostService {
 	List<PostDto> getPostsByUser(Integer userId);
 
 	List<Post> searchPosts(String searchText);
+
+	
 
 }

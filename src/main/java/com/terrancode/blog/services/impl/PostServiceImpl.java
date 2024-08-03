@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.terrancode.blog.dto.BlogPostResponse;
 import com.terrancode.blog.dto.PostDto;
 import com.terrancode.blog.entities.Category;
 import com.terrancode.blog.entities.Post;
@@ -70,14 +72,22 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize) {
-		Pageable p = PageRequest.of(pageNumber, pageSize);
+	public BlogPostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+		Sort s = "asc".equalsIgnoreCase(sortType) ? Sort.by(sortBy).ascending() :  Sort.by(sortBy).descending(); 
+		Pageable p = PageRequest.of(pageNumber, pageSize, s);
 //		List<Post> allPosts = postRepo.findAll();
 		Page<Post> page = postRepo.findAll(p);
 		List<Post> allPosts = page.getContent();
 		List<PostDto> posts = allPosts.stream().map(post -> modelMapper.map(post, PostDto.class))
 				.collect(Collectors.toList());
-		return posts;
+		BlogPostResponse response = new BlogPostResponse();
+		response.setContent(posts);
+		response.setPageNumber(page.getNumber());
+		response.setPageSize(page.getSize());
+		response.setLastPage(page.isLast());
+		response.setTotalElements(page.getTotalElements());
+		response.setTotalPages(page.getTotalPages());
+		return response;
 	}
 
 	@Override
